@@ -4,7 +4,6 @@ from tabulate import tabulate
 import requests
 import datetime
 import time
-import sys
 
 print("\nWarning: Accounts for 19 meals per week when calculating number \nof extra meals left, not 15.\n")
 print("Warning2: Extra Swipes computation assumes no more swipes will be \nused today\n")
