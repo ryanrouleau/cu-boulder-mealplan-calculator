@@ -45,13 +45,9 @@ try:
 	munchMoney = float(diningBalances[3][2:])
 except:
 	exitStr = "Wrong Password! (or this script doesn't work anymore)"
-	tildaInsert = len(exitStr)*"~"
-	sys.exit(tildaInsert + "\n" + tildaInsert + "\n" + exitStr + "\n" + tildaInsert + "\n" + tildaInsert)
-	name = name[0].split(" ")[0]
 
 # thurs 3, Friday 4. Saturday 5, Sunday 6, Monday 0, tuesday 1, Wednsday 2
 # loops through the days until Wednsday and finds the number of meals left
-done = False
 predictedMealsUsed = 0
 while dayOfWeek != 2:
 	if dayOfWeek == 5 or dayOfWeek == 6:
