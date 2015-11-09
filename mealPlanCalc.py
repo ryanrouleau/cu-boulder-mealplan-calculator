@@ -64,7 +64,7 @@ munchMoneyPerDay = munchMoney/deltaDate
 
 # calculates number of days until munchMoneyPerDay >= 1.5
 extraDays = 0
-mMPDNew = 0
+mMPDNew = munchMoney/(deltaDate - extraDays)
 while mMPDNew < 1.5:
 	extraDays += 1
 	mMPDNew = munchMoney/(deltaDate - extraDays)
