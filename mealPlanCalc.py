@@ -32,7 +32,7 @@ for i in range(len(currentDate)):
 
 # calculates number of days between end of semester and the current date
 date1 = datetime.date(currentDate[0], currentDate[1], currentDate[2])
-date2 = datetime.date(2015, 12, 17) # <--- change date for end of semester here ---
+date2 = datetime.date(2016, 5, 6) # <--- change date for end of semester here ---
 deltaDate = date2 - date1
 deltaDate = deltaDate.days
 dayOfWeek = datetime.datetime(currentDate[0], currentDate[1],currentDate[2]).weekday()
@@ -48,27 +48,51 @@ except:
 # thurs 3, Friday 4. Saturday 5, Sunday 6, Monday 0, tuesday 1, Wednsday 2
 # loops through the days until Wednsday and finds the number of meals left
 predictedMealsUsed = 0
-while dayOfWeek != 2:
-	if dayOfWeek == 5 or dayOfWeek == 6:
+_dayOfWeek = dayOfWeek
+while _dayOfWeek != 2:
+	if _dayOfWeek == 5 or _dayOfWeek == 6:
 		predictedMealsUsed += 2
 	else:
 		predictedMealsUsed += 3
-	dayOfWeek += 1
-	if dayOfWeek == 7: 
-		dayOfWeek = 0
+	_dayOfWeek += 1
+	if _dayOfWeek == 7: 
+		_dayOfWeek = 0
 
 # final variables for output
 mealsLeft = diningBalances[2]
 extraMeals = int(mealsLeft) - predictedMealsUsed
-munchMoneyPerDay = munchMoney/deltaDate
+# ensures no division of zero
+if (deltaDate != 0):
+	munchMoneyPerDay = munchMoney/deltaDate
+else:
+	munchMoneyPerDay = munchMoney
 
 # calculates number of days until munchMoneyPerDay >= 1.5
 extraDays = 0
-mMPDNew = munchMoney/(deltaDate - extraDays)
+if (deltaDate != 0):
+	mMPDNew = munchMoney/(deltaDate - extraDays)
+else:
+	mMPDNew = munchMoney
 while mMPDNew < 1.5:
 	extraDays += 1
 	mMPDNew = munchMoney/(deltaDate - extraDays)
 	
+# munch money that should be used before Monday
+if deltaDate%7!=0:
+	weeksLeft = deltaDate/7+1
+else:
+	weeksLeft = deltaDate/7
+useByMon = munchMoney/weeksLeft
+
+# Munch money per day (past)
+date3 = datetime.date(2016, 1, 11)
+deltaDate2 = date1 - date3
+deltaDate2 = deltaDate2.days
+munchMoneyUsed = 150.0 - munchMoney
+mMPDPast = munchMoneyUsed/deltaDate2
+
+# Ratio of past to new munch money per day
+ratio = mMPDPast/munchMoneyPerDay
 #-----------------------------------------------------------------------
 
 # output strings being put into variables
@@ -77,7 +101,11 @@ mealPlanBalanceStr = "Meal plan balance:"
 extraSwipesStr = "Extra meals:"
 totalMunchMoneyStr = "Munch money left:"
 munchMoneyStr = "Munch money per day until end of semester:"
+daysLeftStr = "# of days left in semester:"
 extraDaysStr = "# of days until munch money per day is 1.5:"
+munchMoneyWkStr = "Munch money that can be used by Mon:"
+mMPDPastStr = "Munch money per day (past):"
+ratioStr = "Ratio of past to new munch money per day (good if <=1) :"
 
 table = [
 		[usernameStr, name[0]], 
@@ -85,6 +113,10 @@ table = [
 		[extraSwipesStr, extraMeals],
 		[totalMunchMoneyStr, "$"+str(munchMoney)],
 		[munchMoneyStr, "$"+"%.2f"%munchMoneyPerDay],
+		[mMPDPastStr, "$"+"%.2f"%mMPDPast],
+		[ratioStr, "%.2f"%ratio],
+		[munchMoneyWkStr, "$"+"%.2f"%useByMon],
+		[daysLeftStr, str(deltaDate)+" days"],
 		[extraDaysStr, str(extraDays)+" days"]
 		]
 
